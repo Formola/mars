@@ -9,6 +9,85 @@ import {
 import { updateLatestPlayerPoints } from "../utils/queries";
 
 export default function CalculatorPage() {
+
+  const gameMap = ["Tharsis", "Hellas", "Elysium"];
+
+  const [milestoneTharsis, setMilestoneTharsis] = useState([
+    "terraformatore",
+    "sindaco",
+    "costruttore",
+    "giardiniere",
+    "pianificatore",
+  ])
+
+  const [milestoneHellas, setMilestoneHellas] = useState([
+    "Diversificatore",
+    "Tattico",
+    "Esploratore-del-Polo",
+    "Esperto-di-Energia",
+    "Colonizzatore-dei-Margini"
+  ])
+
+  const [milestoneElysium , setMilestoneElysium] = useState([
+    "Generalista",
+    "Specialista",
+    "Ecologista",
+    "Tycoon",
+    "Leggenda"
+  ])
+
+  const [awardTharsis , setAwardTharsis] = useState([
+    "proprietario-terriero",
+    "banchiere",
+    "scienziato",
+    "esperto-di-termodinamica",
+    "minatore",
+  ])
+
+  const [awardHellas, setAwardHellas] = useState([
+    "Coltivatore",
+    "Magnate",
+    "Barone-dello-Spazio",
+    "Eccentrico",
+    "Impresario"
+  ])
+
+  const [awardElysium , setAwardElysium] = useState([
+    "Celebrità",
+    "Industriale",
+    "Colonizzatore-del-Deserto",
+    "Mercante-di-Terreni",
+    "Benefattore"
+  ])
+
+  const milestoneVenus = "Hoverlord";
+  const awardVenus = "Venusofilo";
+
+  const [mapButtonState, setMapButtonState] = useState({
+    "Tharsis": false,
+    "Hellas": false,
+    "Elysium": false
+  })
+
+  const handleOnClickMapButtons = (map) => {
+    const temp = deepClone(mapButtonState);
+    const resetMilestone = deepClone(milestoneButtonsState)
+    const resetAward = deepClone(awardButtonsState)
+
+    const counter = numberOfTrueValues(mapButtonState);
+    if (counter == 1 && !temp[map]) return null;
+
+    temp[map] = !temp[map]
+    setMapButtonState(temp)
+
+    Object.keys(resetMilestone).forEach(key => { resetMilestone[key] = false;})
+    setMilestoneButtonState(resetMilestone)
+
+    Object.keys(resetAward).forEach(key => { resetAward[key] = false;})
+    setAwardButtonState(resetAward)
+
+  }
+
   const baseCorporations = [
     "Credicor",
     "Ecoline",
@@ -21,6 +100,7 @@ export default function CalculatorPage() {
     "Thorgate",
     "United Nations Mars Initiative",
   ];
+
   const { currentUser } = useAuth();
 
   const navigate = useNavigate();
@@ -36,7 +116,7 @@ export default function CalculatorPage() {
   const forestsPointsRef = useRef();
   const citiesPointsRef = useRef();
 
-  
+  const coloniesnumberRef = useRef();
 
   const corporateEraCorporations = ["Teractor", "Saturn Systems"];
 
@@ -48,57 +128,141 @@ export default function CalculatorPage() {
     "Vitor",
   ];
 
+  const coloniesCorporations = [
+    "Aridor",
+    "Arklight",
+    "Polyphemos",
+    "Poseidon",
+    "Storm Craft Incorporated"
+  ];
+
+  const venusCorporations = [
+    "Aphrodite",
+    "Celestic",
+    "Manutech",
+    "Morning Star Inc",
+    "Viron"
+  ];
+
   const handleOnClickExpansionButtons = (expansion) => {
     const temp = deepClone(expansionButtonsState);
+
+    const resethoverlord = deepClone(milestoneButtonsState)
+    const resetvenusofil = deepClone(awardButtonsState)
+
     temp[expansion] = !temp[expansion];
     const newCorporationsList = baseCorporations
+
+    let newMilestoneTharsisList = milestoneTharsis 
+    let newMilestoneHellasList = milestoneHellas
+    let newMilestoneElysiumList = milestoneElysium
+
+    let newAwardTharsisList = awardTharsis
+    let newAwardHellasList = awardHellas
+    let newAwardElysiumList = awardElysium
+    
+
     if (temp.prelude) {
       newCorporationsList.push(...preludeCorporations)
     }
     if (temp["corporate-era"]) {
       newCorporationsList.push(...corporateEraCorporations)
     }
+    if(temp.colonies) {
+      newCorporationsList.push(...coloniesCorporations)
+    }
+    if(temp["venus-next"]){
+      newCorporationsList.push(...venusCorporations)
+
+      if(milestoneTharsis.length < 6 && milestoneHellas.length < 6 && milestoneElysium.length < 6) {
+        newMilestoneTharsisList.push(milestoneVenus)
+        newMilestoneHellasList.push(milestoneVenus)
+        newMilestoneElysiumList.push(milestoneVenus)
+
+        setMilestoneTharsis(newMilestoneTharsisList)
+        setMilestoneHellas(newMilestoneHellasList)
+        setMilestoneElysium(newMilestoneElysiumList)
+      }
+
+      if ( awardTharsis.length< 6 ){
+        newAwardTharsisList.push(awardVenus)
+        newAwardHellasList.push(awardVenus)
+        newAwardElysiumList.push(awardVenus)
+
+        setAwardTharsis( newAwardTharsisList)
+        setAwardHellas( newAwardHellasList)
+        setAwardElysium( newAwardElysiumList)
+      }    
+    }
+
     setExpansionButtonState(temp);
     setCorporationLists(newCorporationsList)
-    console.log(newCorporationsList)
+
+    if(!temp["venus-next"]){
+      setMilestoneTharsis(newMilestoneTharsisList.splice(0,5))
+      setMilestoneHellas(newMilestoneHellasList.splice(0,5))
+      setMilestoneElysium(newMilestoneElysiumList.splice(0,5))
+
+      setAwardTharsis(newAwardTharsisList.splice(0,5))
+      setAwardHellas(newAwardHellasList.splice(0,5))
+      setAwardElysium(newAwardElysiumList.splice(0,5))
+
+      resethoverlord["Hoverlord"] = false;
+      resetvenusofil["Venusofilo"] = false;
+
+      setMilestoneButtonState(resethoverlord)
+      setAwardButtonState(resetvenusofil)
+    }
+
   };
 
   // EXPANSIONS
-  const expansions = ["prelude", "corporate-era"];
+  const expansions = ["prelude", "corporate-era" , "colonies" , "venus-next"];
+
   const [expansionButtonsState, setExpansionButtonState] = useState({
     prelude: false,
     "corporate-era": false,
+    colonies : false,
+    "venus-next" : false
   });
 
-  const milestones = [
-    "terraformatore",
-    "sindaco",
-    "costruttore",
-    "giardiniere",
-    "pianificatore",
-  ];
   const [milestoneButtonsState, setMilestoneButtonState] = useState({
     terraformatore: false,
     sindaco: false,
     costruttore: false,
     giardiniere: false,
     pianificatore: false,
+    diversificatore: false,
+    tattico: false,
+    "esploratore-del-polo": false,
+    "esperto-di-energia": false,
+    "colonizzatore-dei-margini": false, 
+    generalista: false,
+    specialista: false,
+    ecologista: false,
+    tycoon: false,
+    leggenda: false,
+    hoverlord: false
   });
-
-  const awards = [
-    "proprietario-terriero",
-    "banchiere",
-    "scienziato",
-    "esperto-di-termodinamica",
-    "minatore",
-  ];
+  
   const [awardButtonsState, setAwardButtonState] = useState({
     "proprietario-terriero": false,
     banchiere: false,
     scienziato: false,
     "esperto-di-termodinamica": false,
     minatore: false,
+    coltivatore: false,
+    magnate: false,
+    "Barone-dello-Spazio": false,
+    eccentrico: false,
+    impresario: false,
+    celebrità: false,
+    industriale: false,
+    "colonizzatore-del-deserto": false,
+    "mercante-di-terreni": false,
+    benefattore: false
   });
+
   const [awardPointCheckboxState, setAwardPointCheckboxState] = useState({
     "proprietario-terriero": {
       2: false,
@@ -120,6 +284,51 @@ export default function CalculatorPage() {
       2: false,
       5: false,
     },
+    Coltivatore: {
+      2: false,
+      5: false,
+    },
+    Magnate: {
+      2: false,
+      5: false,
+    },
+    "Barone-dello-Spazio": {
+      2: false,
+      5: false,
+    },
+    Eccentrico: {
+      2: false,
+      5: false,
+    },
+    Impresario: {
+      2: false,
+      5: false,
+    },
+    Celebrità: {
+      2: false,
+      5: false,
+    },
+    Industriale: {
+      2: false,
+      5: false,
+    },
+    "Colonizzatore-del-Deserto": {
+      2: false,
+      5: false,
+    },
+    "Mercante-di-Terreni": {
+      2: false,
+      5: false,
+    },
+    Benefattore: {
+      2: false,
+      5: false,
+    },
+    Venusofilo: {
+      2: false,
+      5: false,
+    },
+    
   });
 
   const handleSubmit = async (e) => {
@@ -175,6 +384,7 @@ export default function CalculatorPage() {
     );
     setLoading(false);
   };
+
   const handleOnClickMilestoneButtons = (milestone) => {
     const temp = deepClone(milestoneButtonsState);
 
@@ -184,11 +394,15 @@ export default function CalculatorPage() {
 
     temp[milestone] = !temp[milestone];
     setMilestoneButtonState(temp);
+
   };
+
   const handleOnClickAwardButtons = (award) => {
     const temp = deepClone(awardButtonsState);
+
     var counter = numberOfTrueValues(awardButtonsState);
     if (counter == 3 && !temp[award]) return null;
+
     temp[award] = !temp[award];
     setAwardButtonState(temp);
   };
@@ -211,6 +425,26 @@ export default function CalculatorPage() {
               <form onSubmit={handleSubmit} className="box">
                 {error && <p className="has-text-danger">{error}</p>}
                 {message && <p className="has-text-success">{message}</p>}
+
+                <label className="label">Mappa</label>
+                <div className="buttons has-addons">
+                  {gameMap.map((map,index) => {
+                    return(
+                      <div
+                        key={index}
+                        onClick={() => handleOnClickMapButtons(map)}
+                        className={"button" + 
+                          (mapButtonState[map] ? " " + map
+                            : "" 
+                          )
+                        }
+                      >
+                        {map}
+                      </div>
+                    );
+                  })}
+                </div>
+
                 <label className="label">Espansioni</label>
                 <div className="buttons has-addons">
                   {expansions.map((expansion, index) => {
@@ -230,6 +464,7 @@ export default function CalculatorPage() {
                     );
                   })}
                 </div>
+
                 <div className="field">
                   <label className="label">Corporation</label>
                   <div className="control">
@@ -242,6 +477,7 @@ export default function CalculatorPage() {
                     </div>
                   </div>
                 </div>
+
                 <div className="field">
                   <label className="label">Tasso di terraformazione</label>
                   <div className="control">
@@ -256,6 +492,7 @@ export default function CalculatorPage() {
                     />
                   </div>
                 </div>
+
                 <div className="field">
                   <label className="label">Punti vittoria delle carte</label>
                   <div className="control">
@@ -267,33 +504,75 @@ export default function CalculatorPage() {
                     />
                   </div>
                 </div>
+
                 <div className="field">
                   <label className="label">Milestones</label>
-                  <div className="buttons has-addons">
-                    {milestones.map((milestone, index) => {
-                      return (
-                        <div
-                          key={index}
-                          onClick={() =>
-                            handleOnClickMilestoneButtons(milestone)
-                          }
-                          className={
-                            "button" +
-                            (milestoneButtonsState[milestone]
-                              ? " " + milestone
-                              : "")
-                          }
-                        >
-                          {milestone}
-                        </div>
-                      );
-                    })}
+                  <div className="buttons has-addons mb-4">
+                    { mapButtonState["Tharsis"] ? 
+                      milestoneTharsis.map((milestone, index) => {
+                        return (
+                          <div
+                            key={index}
+                            onClick={() =>
+                              handleOnClickMilestoneButtons(milestone)
+                            }
+                            className={
+                              "button" +
+                              (milestoneButtonsState[milestone]
+                                ? " " + milestone
+                                : "")
+                            }
+                          >
+                            {milestone}
+                          </div>
+                        );
+                      }) : mapButtonState["Hellas"] ? 
+                      milestoneHellas.map((milestone, index) => {
+                        return (
+                          <div
+                            key={index}
+                            onClick={() =>
+                              handleOnClickMilestoneButtons(milestone)
+                            }
+                            className={
+                              "button" +
+                              (milestoneButtonsState[milestone]
+                                ? " " + milestone
+                                : "")
+                            }
+                          >
+                            {milestone}
+                          </div>
+                        );
+                      }) : mapButtonState["Elysium"] ? 
+                      milestoneElysium.map((milestone, index) => {
+                        return (
+                          <div
+                            key={index}
+                            onClick={() =>
+                              handleOnClickMilestoneButtons(milestone)
+                            }
+                            className={
+                              "button" +
+                              (milestoneButtonsState[milestone]
+                                ? " " + milestone
+                                : "")
+                            }
+                          >
+                            {milestone}
+                          </div>
+                        );
+                      }) : "Scegli Mappa per visualizzare le milestone"
+                    }
+
                   </div>
                 </div>
+
                 <div className="field">
                   <label className="label">Riconoscimenti</label>
                   <div className="buttons has-addons">
-                    {awards.map((award, index) => {
+                    { mapButtonState["Tharsis"] ? 
+                    awardTharsis.map((award, index) => {
                       return (
                         <div
                           key={index}
@@ -306,9 +585,41 @@ export default function CalculatorPage() {
                           {award}
                         </div>
                       );
-                    })}
+                    }) : mapButtonState["Hellas"] ? 
+                    awardHellas.map((award, index) => {
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => handleOnClickAwardButtons(award)}
+                          className={
+                            "button" +
+                            (awardButtonsState[award] ? " " + award : "")
+                          }
+                        >
+                          {award}
+                        </div>
+                      );
+                    }) : mapButtonState["Elysium"] ? 
+                    awardElysium.map((award, index) => {
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => handleOnClickAwardButtons(award)}
+                          className={
+                            "button" +
+                            (awardButtonsState[award] ? " " + award : "")
+                          }
+                        >
+                          {award}
+                        </div>
+                      );
+                    }) : "Scegli Mappa per visualizzare i riconoscimenti"
+                  }
                   </div>
-                  {awards.map((award, index) => {
+
+                  { mapButtonState["Tharsis"] ? 
+                    awardTharsis.map((award, index) => {
+
                     return awardButtonsState[award] ? (
                       <div
                         key={index}
@@ -336,10 +647,74 @@ export default function CalculatorPage() {
                           5
                         </div>
                       </div>
-                    ) : null;
-                  })}
+                    ) : "" }) 
+                    : mapButtonState["Hellas"] ?
+
+                      awardHellas.map((award, index) => {
+
+                      return awardButtonsState[award] ? (
+                        <div
+                          key={index}
+                          className="field is-flex is-fullwidth is-flex-direction-row is-justify-content-space-between"
+                        >
+                          <div>{award}</div>
+                          <div>
+                            <input
+                              onClick={handleAwardPointCheckboxOnClick}
+                              type="checkbox"
+                              className="checkbox"
+                              value={2}
+                              name={award}
+                              disabled={awardPointCheckboxState[award][5]}
+                            />
+                            2
+                            <input
+                              onClick={handleAwardPointCheckboxOnClick}
+                              type="checkbox"
+                              className="checkbox"
+                              value={5}
+                              name={award}
+                              disabled={awardPointCheckboxState[award][2]}
+                            />
+                            5
+                          </div>
+                        </div>
+                      ) : "" })
+                      : mapButtonState["Elysium"] ? 
+                      awardElysium.map((award, index) => {
+
+                        return awardButtonsState[award] ? (
+                          <div
+                            key={index}
+                            className="field is-flex is-fullwidth is-flex-direction-row is-justify-content-space-between"
+                          >
+                            <div>{award}</div>
+                            <div>
+                              <input
+                                onClick={handleAwardPointCheckboxOnClick}
+                                type="checkbox"
+                                className="checkbox"
+                                value={2}
+                                name={award}
+                                disabled={awardPointCheckboxState[award][5]}
+                              />
+                              2
+                              <input
+                                onClick={handleAwardPointCheckboxOnClick}
+                                type="checkbox"
+                                className="checkbox"
+                                value={5}
+                                name={award}
+                                disabled={awardPointCheckboxState[award][2]}
+                              />
+                              5
+                            </div>
+                          </div>
+                        ) : "" })
+                        : "" }
                 </div>
-                <div className="field">
+
+                <div className="field mt-5">
                   <label className="label">Punti delle foreste</label>
                   <div className="control">
                     <input
@@ -361,19 +736,26 @@ export default function CalculatorPage() {
                     />
                   </div>
                 </div>
+
                 <div className="field">
                   <button
-                    className="button is-success is-fullwidth"
+                    className="button is-success is-fullwidth mt-5"
                     disabled={loading}
                   >
                     Calcola
                   </button>
                 </div>
+
               </form>
+
             </div>
+
           </div>
+
         </div>
+
       </div>
+      
     </section>
   );
 }
