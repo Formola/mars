@@ -15,69 +15,88 @@ export const AddGamePage = () => {
     useRef(),
     useRef(),
   ];
+  const coloniesnumberRef = useRef();
   // EXPANSIONS
-  const expansions = ["prelude", "corporate-era"];
+  const expansions = ["prelude", "corporate-era", "colonies" , "venus-next"];
+
   const [expansionButtonsState, setExpansionButtonState] = useState({
     prelude: false,
     "corporate-era": false,
+    colonies: false,
+    "venus-next": false
   });
 
-  // MILESTONES
-  const milestones = [
-    "terraformatore",
-    "sindaco",
-    "costruttore",
-    "giardiniere",
-    "pianificatore",
+  const coloniesCard = [
+    "Europa",
+    "Titano",
+    "Callisto",
+    "Io",
+    "Ganymede",
+    "Plutone",
+    "Enceladus",
+    "Ceres",
+    "Miranda",
+    "Luna",
+    "Tritone"
   ];
-  const [milestoneButtonsState, setMilestoneButtonState] = useState({
-    terraformatore: false,
-    sindaco: false,
-    costruttore: false,
-    giardiniere: false,
-    pianificatore: false,
+
+  const [coloniesButtonState , setColoniesButtonState] = useState({
+    "Europa": false,
+    "Titano": false,
+    "Callisto": false,
+    "Io": false,
+    "Ganymede": false,
+    "Plutone": false,
+    "Enceladus": false,
+    "Ceres": false,
+    "Miranda": false,
+    "Luna": false,
+    "Tritone": false
   });
 
-  // AWARDS
-  const awards = [
-    "proprietario-terriero",
-    "banchiere",
-    "scienziato",
-    "esperto-di-termodinamica",
-    "minatore",
-  ];
-  const [awardButtonsState, setAwardButtonState] = useState({
-    "proprietario-terriero": false,
-    banchiere: false,
-    scienziato: false,
-    "esperto-di-termodinamica": false,
-    minatore: false,
-  });
+  const showColoniesLabel = () => {
+    return(
+      <>
+        <label className="label">Scegli Colonie</label>
+      </>
+    )
+  }
+
+  const [coloniesList, setColoniesList] = useState([])
 
   const handleOnClickExpansionButtons = (expansion) => {
     const temp = deepClone(expansionButtonsState);
+    const coloniesfalse = deepClone(coloniesButtonState)
+
     temp[expansion] = !temp[expansion];
+
+    if(temp.colonies) {
+      Object.keys(coloniesfalse).forEach(key => { coloniesfalse[key] = false;})
+      setColoniesButtonState(coloniesfalse)
+    }
+
     setExpansionButtonState(temp);
   };
 
-  const handleOnClickMilestoneButtons = (milestone) => {
-    const temp = deepClone(milestoneButtonsState);
+  const handleOnClickColoniesButtons = (colony) => {
+    const temp = deepClone(coloniesButtonState);
 
-    // make sure that there are less/equals than 3 milestones selected
-    const counter = numberOfTrueValues(milestoneButtonsState);
-    if (counter == 3 && !temp[milestone]) return null;
+    const counter = numberOfTrueValues(coloniesButtonState);
+    if (counter == coloniesnumberRef.current.value && !temp[colony]) return null;
 
-    temp[milestone] = !temp[milestone];
-    setMilestoneButtonState(temp);
-  };
+    temp[colony] = !temp[colony];
+    
+    setColoniesButtonState(temp);
+    setColoniesList(colony)
+  }
 
-  const handleOnClickAwardButtons = (award) => {
-    const temp = deepClone(awardButtonsState);
-    var counter = numberOfTrueValues(awardButtonsState);
-    if (counter == 3 && !temp[award]) return null;
-    temp[award] = !temp[award];
-    setAwardButtonState(temp);
-  };
+  const resetSelectedColonies = () => {
+    const resetColonies = deepClone(coloniesButtonState)
+
+    Object.keys(resetColonies).forEach(key => { resetColonies[key] = false;})
+    setColoniesButtonState(resetColonies)
+
+  }
 
   const handleNumberOfPlayersOnChange = (e) => {
     setNumberOfPlayers(e.target.value);
@@ -118,7 +137,9 @@ export const AddGamePage = () => {
         return
       }
     }
+
     const winner = getWinner(playersStats)
+
     const match = {
       winner: winner,
       partecipants: playersStats
@@ -156,6 +177,47 @@ export const AddGamePage = () => {
                     );
                   })}
                 </div>
+
+                {expansionButtonsState["colonies"] ? 
+                  <div className="field">
+                    <label className="label">Inserisci numero di colonie in gioco</label>
+                    <div className="control">
+                      <input
+                        type="number"
+                        min={5}
+                        max={7}
+                        onChange={() => resetSelectedColonies()}
+                        placeholder="Inserisci numero di colonie in gioco a fine partita..."
+                        className="input"
+                        ref={coloniesnumberRef}
+                        required
+                      />
+                    </div>
+                  </div>
+                  : ""
+                }
+
+                {expansionButtonsState["colonies"] ? showColoniesLabel() : ""}
+
+                {expansionButtonsState["colonies"] ? coloniesCard.map((colony,index) => {
+                  
+                    return (
+                        <div
+                          key={index}
+                          onClick={() => handleOnClickColoniesButtons(colony)}
+                          className={"button mb-3 mr-3" + 
+                            (coloniesButtonState[colony]
+                              ? " " + colony
+                              : "")
+                          }
+                        >
+                          {colony}
+                        </div>
+                    );
+                  }) : ""
+                }
+
+
                 <div className="field">
                   <label className="label">Numero di giocatori</label>
                   <div className="control">

@@ -1,9 +1,73 @@
+.Tharsis {
+    background-color: orange;
+}
+
+.Hellas {
+    background-color: blue;
+}
+
+.Elysium {
+    background-color: greenyellow;
+}
+
 .prelude {
     background-color: #d04e90;
 }
 
 .corporate-era {
     background-color: #c52b2f;
+}
+
+.colonies {
+    background-color: blue;
+}
+
+.venus-next {
+    background-color: orange;
+}
+
+.Europa {
+    background-color: green;
+}
+
+.Titano {
+    background-color: yellow;
+}
+
+.Callisto {
+    background-color: purple;
+}
+
+.Io {
+    background-color: red;
+}
+
+.Ganymede{
+    background-color: green;
+}
+
+.Plutone {
+    background-color: blue;
+}
+
+.Enceladus {
+    background-color: greenyellow;
+}
+
+.Ceres {
+    background-color: brown;
+}
+
+.Miranda {
+    background-color: darkgreen;
+}
+
+.Luna {
+    background-color: aquamarine;
+}
+
+.Tritone {
+    background-color: lightslategray;
 }
 
 .giardiniere {
@@ -42,4 +106,92 @@
 
 .minatore {
     background-color: darkgoldenrod;
+}
+
+.Diversificatore {
+    background-color: aquamarine;
+}
+
+.Tattico {
+    background-color: red;
+}
+
+.Esploratore-del-Polo {
+    background-color: burlywood;
+}
+
+.Esperto-di-Energia {
+    background-color: plum;
+}
+
+.Colonizzatore-dei-Margini {
+    background-color: goldenrod;
+}
+
+.Generalista {
+    background-color: aqua;
+}
+
+.Specialista {
+    background-color: brown;
+}
+
+.Ecologista {
+    background-color: green;
+}
+
+.Tycoon {
+    background-color: aqua;
+}
+
+.Leggenda {
+    background-color: red;
+}
+
+.Hoverlord {
+    background-color: yellow;
+}
+
+.Coltivatore {
+    background-color: green;
+}
+
+.Magnate {
+    background-color: gray;
+}
+
+.Barone-dello-Spazio {
+    background-color: darkblue;
+}
+
+.Eccentrico {
+    background-color: orange;
+}
+
+.Impresario {
+    background-color: blue;
+}
+
+.Celebrità {
+    background-color: green;
+}
+
+.Industriale{
+    background-color: brown;
+}
+
+.Colonizzatore-del-Deserto {
+    background-color: orange;
+}
+
+.Mercante-di-Terreni {
+    background-color: blue;
+}
+
+.Benefattore{
+    background-color: red;
+}
+
+.Venusofilo {
+    background-color: aqua;
 }
