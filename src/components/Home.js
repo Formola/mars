@@ -9,7 +9,7 @@ export const Home = () => {
   const [matches, setMatches] = useState()
 
   useEffect(() => {
-    fetchMatches().then((matches) => setMatches(matches))
+    fetchMatches().then((matches) => setMatches(matches.reverse()))
   }, [])
 
   const navigate = useNavigate()
