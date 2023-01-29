@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
   calculateFinalPoints,
   deepClone,
@@ -75,7 +75,7 @@ export default function CalculatorPage() {
     const resetAward = deepClone(awardButtonsState)
 
     const counter = numberOfTrueValues(mapButtonState);
-    if (counter == 1 && !temp[map]) return null;
+    if (counter === 1 && !temp[map]) return null;
 
     temp[map] = !temp[map]
     setMapButtonState(temp)
@@ -103,9 +103,6 @@ export default function CalculatorPage() {
 
   const { currentUser } = useAuth();
 
-  const navigate = useNavigate();
-
-  const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [corporationsList, setCorporationLists] = useState(baseCorporations)
@@ -116,7 +113,6 @@ export default function CalculatorPage() {
   const forestsPointsRef = useRef();
   const citiesPointsRef = useRef();
 
-  const coloniesnumberRef = useRef();
 
   const corporateEraCorporations = ["Teractor", "Saturn Systems"];
 
@@ -390,7 +386,7 @@ export default function CalculatorPage() {
 
     // make sure that there are less/equals than 3 milestones selected
     const counter = numberOfTrueValues(milestoneButtonsState);
-    if (counter == 3 && !temp[milestone]) return null;
+    if (counter === 3 && !temp[milestone]) return null;
 
     temp[milestone] = !temp[milestone];
     setMilestoneButtonState(temp);
@@ -401,7 +397,7 @@ export default function CalculatorPage() {
     const temp = deepClone(awardButtonsState);
 
     var counter = numberOfTrueValues(awardButtonsState);
-    if (counter == 3 && !temp[award]) return null;
+    if (counter === 3 && !temp[award]) return null;
 
     temp[award] = !temp[award];
     setAwardButtonState(temp);

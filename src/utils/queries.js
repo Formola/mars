@@ -1,4 +1,4 @@
-import { collection, query, where, doc, getDocs, getDoc, addDoc, updateDoc, setDoc, Timestamp, orderBy, limit} from "firebase/firestore"
+import { collection, query, where, doc, getDocs, addDoc, updateDoc, setDoc, Timestamp, orderBy, limit} from "firebase/firestore"
 import { db } from "../firebase"
 
 export const checkUsernameAvailability = async (username) => {

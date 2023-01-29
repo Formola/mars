@@ -63,6 +63,7 @@ export const AddGamePage = () => {
   }
 
   const [coloniesList, setColoniesList] = useState([])
+  print(coloniesList);
 
   const handleOnClickExpansionButtons = (expansion) => {
     const temp = deepClone(expansionButtonsState);
@@ -82,7 +83,7 @@ export const AddGamePage = () => {
     const temp = deepClone(coloniesButtonState);
 
     const counter = numberOfTrueValues(coloniesButtonState);
-    if (counter == coloniesnumberRef.current.value && !temp[colony]) return null;
+    if (counter === coloniesnumberRef.current.value && !temp[colony]) return null;
 
     temp[colony] = !temp[colony];
     
